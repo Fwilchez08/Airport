@@ -1477,7 +1477,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String idStr= ID.getText(); 
         
         Response response = PassengerController.AgregarPasajeros(
-                idStr, firstname,lastname, LocalDate.of(year, month, day), phoneCode,
+                idStr, firstname,lastname, year, month, day, phoneCode,
                 phone, country);
 
         if (response.getStatus() >= 500) {
@@ -1648,7 +1648,7 @@ public class AirportFrame extends javax.swing.JFrame {
             if (MIN3.getItemCount() > 0) {
                 MIN3.setSelectedIndex(0);
             }
-            this.idvuelo.addItem(); 
+            this.TipoVuelo.addItem(id); 
         }
 
        

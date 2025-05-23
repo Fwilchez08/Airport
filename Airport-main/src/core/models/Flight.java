@@ -41,7 +41,24 @@ public class Flight {
         
         this.plane.addFlight(this);
     }
-
+    
+    public Flight(String id, Plane plane, Location departureLocation, Location scaleLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
+        this.id = id;
+        this.passengers = new ArrayList<>();
+        this.plane = plane;
+        this.departureLocation = departureLocation;
+        this.scaleLocation = scaleLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.departureDate = departureDate;
+        this.hoursDurationArrival = hoursDurationArrival;
+        this.minutesDurationArrival = minutesDurationArrival;
+        this.hoursDurationScale = hoursDurationScale;
+        this.minutesDurationScale = minutesDurationScale;
+        
+        this.plane.addFlight(this);
+    }
+    
+ 
     private Flight(Flight flight) {
         this.id = flight.id;
         this.passengers = new ArrayList<>();

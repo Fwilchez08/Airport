@@ -13,6 +13,7 @@ import java.util.Scanner;
 import core.models.Flight;
 import core.models.Passenger;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -24,7 +25,7 @@ public class PassengerController {
 
     Scanner leer = new Scanner(System.in);
 
-    public static Response AgregarPasajeros(String id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
+    public static Response AgregarPasajeros(String id, String firstname, String lastname, int year, int month, int day, int countryPhoneCode, long phone, String country) {
 
         try {
             long passengerIdLong;
@@ -34,11 +35,13 @@ public class PassengerController {
             int phoneCodeInt;
             long phoneLong;
             int countryInt;
-
-            // Válidar passengerId
-            if (id == null) {
-                return new Response("Passenger id must be not empty.", Status.BAD_REQUEST);
-            }
+            
+            String codnum = countryPhoneCode + "";
+            
+            String numlong = phone + "";
+            
+             String año = year + "";
+            
             String idInt;
             int ageInt;
             boolean genderB;
@@ -58,40 +61,51 @@ public class PassengerController {
             if (Storage.getInstance().getPassenger(idint) != null) {
                 return new Response("la identificacion del pasagero debe ser unica", Status.BAD_REQUEST);
             }
-
-            if (firstname.equals("")) {
+           
+             if (id== null || id.trim().isEmpty()) {
+                return new Response("no se ha ingresado el id", Status.BAD_REQUEST);
+            }
+              if (codnum==  null || codnum.trim().isEmpty()) {
+                return new Response("no se ha ingresado el codigo", Status.BAD_REQUEST);
+            }
+               if (firstname== null || firstname.trim().isEmpty()) {
                 return new Response("no se ha ingresado el nombre", Status.BAD_REQUEST);
             }
+                if (numlong== null || numlong.trim().isEmpty()) {
+                return new Response("no se ha ingresado el numero de telefono", Status.BAD_REQUEST);
+            }
+            if (año== null || año.trim().isEmpty()) {
+                return new Response("no se ha ingresado el año de nacimiento", Status.BAD_REQUEST);
+            }
 
-            if (lastname.equals("")) {
+            if (lastname==null || lastname.trim().isEmpty()) {
                 return new Response("no se ha ingresado el nombre", Status.BAD_REQUEST);
             }
 
             try {
-                String añoS = birthDate + "";
-                int longitud = añoS.length();
-                if (longitud > 4) {
+                int longitud = año.length();
+                if (longitud > 5 || longitud <=0) {
                     return new Response("el año ingresado no es valido", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("el año debe tener 4 digitos", Status.BAD_REQUEST);
             }
-            String codnum = countryPhoneCode + "";
+            
             int longcod = codnum.length();
             if (longcod < 0 && longcod > 3) {
                 return new Response("el codigo es invalido", Status.BAD_REQUEST);
             }
-            String numlong = phone + "";
+            
             int longN = numlong.length();
             if (longN < 0 && longN < 11) {
                 return new Response("el numero es invalido", Status.BAD_REQUEST);
             }
 
             Storage storage = Storage.getInstance();
-            Passenger passenger= new Passenger(idint, firstname, lastname, birthDate, countryPhoneCode, phone, country); 
+            Passenger passenger= new Passenger(idint, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country); 
             ArrayList<Passenger> passengersCopy = new ArrayList<>();
             passengersCopy.add(passenger.clonar()); 
-            if (!storage.getInstance().addPerson(new Passenger(idint, firstname, lastname, birthDate, countryPhoneCode, phone, country))) {
+            if (!storage.getInstance().addPerson(new Passenger(idint, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country))) {
                 return new Response("A person with that id already exists", Status.BAD_REQUEST);
             }
             
