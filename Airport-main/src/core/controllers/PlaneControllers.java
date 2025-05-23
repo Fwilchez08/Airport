@@ -1,0 +1,101 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package core.controllers;
+
+import core.controllers.utils.Response;
+import core.controllers.utils.Status;
+import core.models.Flight;
+import core.models.Plane;
+import core.models.storage.Storage;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Fiorella W C
+ */
+public class PlaneControllers {
+    public static Response crearAvion(String id, String brand, String model, int maxCapacity, String airline){
+        try{
+            String maxCapacityStr= maxCapacity+""; 
+            int idInt= Integer.parseInt(id); 
+            
+            if(id== null&& id.trim().isEmpty()){
+                return new Response("el id de el avion no puede estar vacío", Status.BAD_REQUEST);
+            }       
+            
+            if(Storage.getInstance().getAvion(id)!= null){
+                return new Response("el avion debe ser unico", Status.BAD_REQUEST); 
+            }
+            
+            if (!id.trim().matches("^[A-Z]{2}\\d{5}$")) {
+                return new Response("Plane id must be a valid format: XXYYYYY (e.g. AB12345)", Status.BAD_REQUEST);
+            }
+            
+            if (brand == null || brand.trim().isEmpty()) {
+                return new Response("Brand must be not empty.", Status.BAD_REQUEST);
+            }
+            
+            // válidar model
+            if (model == null || model.trim().isEmpty()) {
+                return new Response("Model must be not empty.", Status.BAD_REQUEST);
+            }
+            
+            // válidar maxCapacity
+            if (maxCapacityStr == null || maxCapacityStr.trim().isEmpty()) {
+                return new Response("Max capacity must be not empty.", Status.BAD_REQUEST);
+            }
+            try {
+                //maxCapacityInt = Integer.parseInt(maxCapacity.trim());
+                if (maxCapacity < 0) {
+                    return new Response("Max capcity must be positive.", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("Max capacity must be a number.", Status.BAD_REQUEST);
+            }
+            if (airline == null || airline.trim().isEmpty()) {
+                return new Response("Airline must be not empty.", Status.BAD_REQUEST);
+            }
+            
+            
+            Storage storage = Storage.getInstance();
+            Plane plane = new Plane(id, brand, model, maxCapacity, airline);
+            ArrayList<Plane> avionCopy = new ArrayList<>();
+            avionCopy.add(plane.clonar());
+            
+            
+            if (!storage.addAvion(new Plane(id, brand, model, maxCapacity, airline))) {
+                return new Response("el avion ya existe", Status.BAD_REQUEST); 
+            }
+            return new Response("el avion se creo exitosamente", Status.CREATED, avionCopy);
+            
+            
+            
+        }catch(Exception ex){
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+    
+     public static Response getSortedPlanes() {
+        try {
+            ArrayList<Plane> aviones = Storage.getInstance().organizarAviones();
+            ArrayList<Plane> copiaAviones = new ArrayList<>();
+            if (aviones != null) {
+                for (Plane plane : aviones) {
+                    if (plane != null) {
+                        copiaAviones.add(plane.clonar());
+                    } else {
+                        copiaAviones.add(null);
+                    }
+                }
+            }
+            return new Response("Planes loaded succesfully.", Status.OK, copiaAviones);
+        } catch (Exception ex) {
+            return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+}
