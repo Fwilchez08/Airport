@@ -4,6 +4,9 @@
  */
 package core.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author edangulo
@@ -16,6 +19,10 @@ public class Location {
     private String airportCountry;
     private double airportLatitude;
     private double airportLongitude;
+    
+    private List<Flight> departures = new ArrayList<>();
+    private List<Flight> arrivals = new ArrayList<>();
+    private List<Flight> scales = new ArrayList<>();
 
     public Location(String airportId, String airportName, String airportCity, String airportCountry, double airportLatitude, double airportLongitude) {
         this.airportId = airportId;
@@ -62,4 +69,30 @@ public class Location {
     public Location clonar(){
         return new Location(this); 
     }
+
+    public List<Flight> getDepartures() {
+        return departures;
+    }
+
+    public List<Flight> getArrivals() {
+        return arrivals;
+    }
+
+    public List<Flight> getScales() {
+        return scales;
+    }
+
+    public void addArrival(Flight flight) {
+        arrivals.add(flight);
+    }
+
+    public void addScale(Flight flight) {
+        scales.add(flight);
+    }
+
+    public void addDeparture(Flight f) {
+        departures.add(f);
+    }
+    
+    
 }

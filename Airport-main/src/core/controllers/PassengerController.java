@@ -108,11 +108,6 @@ public class PassengerController {
             if (!storage.getInstance().addPerson(new Passenger(idint, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country))) {
                 return new Response("A person with that id already exists", Status.BAD_REQUEST);
             }
-            
-            /*if (!storage.getInstance().addPerson(new Passenger(idint, firstname, lastname, birthDate, countryPhoneCode, phone, country))) {
-                return new Response("A person with that id already exists", Status.BAD_REQUEST);
-            }*/
-
             return new Response("El pasajero se creo con exito", Status.CREATED, passengersCopy);
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);

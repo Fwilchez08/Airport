@@ -17,69 +17,65 @@ import java.util.ArrayList;
  * @author Fiorella W C
  */
 public class PlaneControllers {
-    public static Response crearAvion(String id, String brand, String model, int maxCapacity, String airline){
-        try{
-            String maxCapacityStr= maxCapacity+""; 
-            int idInt= Integer.parseInt(id); 
-            
-            if(id== null&& id.trim().isEmpty()){
+
+    public static Response crearAvion(String id, String brand, String model, int maxCapacity, String airline) {
+        try {
+            String maxCapacityStr = maxCapacity + "";
+            int idInt = Integer.parseInt(id);
+
+            if (id == null && id.trim().isEmpty()) {
                 return new Response("el id de el avion no puede estar vacío", Status.BAD_REQUEST);
-            }       
-            
-            if(Storage.getInstance().getAvion(id)!= null){
-                return new Response("el avion debe ser unico", Status.BAD_REQUEST); 
             }
-            
+
+            if (Storage.getInstance().getAvion(id) != null) {
+                return new Response("el avion debe ser unico", Status.BAD_REQUEST);
+            }
+
             if (!id.trim().matches("^[A-Z]{2}\\d{5}$")) {
-                return new Response("Plane id must be a valid format: XXYYYYY (e.g. AB12345)", Status.BAD_REQUEST);
+                return new Response("la id del avion debe seguir el formato: XXYYYYY (e.g. AB12345)", Status.BAD_REQUEST);
             }
-            
+
             if (brand == null || brand.trim().isEmpty()) {
-                return new Response("Brand must be not empty.", Status.BAD_REQUEST);
+                return new Response("marca no se ha registrado", Status.BAD_REQUEST);
             }
-            
+
             // válidar model
             if (model == null || model.trim().isEmpty()) {
-                return new Response("Model must be not empty.", Status.BAD_REQUEST);
+                return new Response("Modelo no se ha registrado", Status.BAD_REQUEST);
             }
-            
+
             // válidar maxCapacity
             if (maxCapacityStr == null || maxCapacityStr.trim().isEmpty()) {
-                return new Response("Max capacity must be not empty.", Status.BAD_REQUEST);
+                return new Response("Capacidad Maxima no se ha registrado", Status.BAD_REQUEST);
             }
             try {
                 //maxCapacityInt = Integer.parseInt(maxCapacity.trim());
                 if (maxCapacity < 0) {
-                    return new Response("Max capcity must be positive.", Status.BAD_REQUEST);
+                    return new Response("Capacidad Maxima debe ser positiva", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Max capacity must be a number.", Status.BAD_REQUEST);
+                return new Response("Capacidad Maxima debe ser un número.", Status.BAD_REQUEST);
             }
             if (airline == null || airline.trim().isEmpty()) {
-                return new Response("Airline must be not empty.", Status.BAD_REQUEST);
+                return new Response("Aereolinea no se4 ha registrado", Status.BAD_REQUEST);
             }
-            
-            
+
             Storage storage = Storage.getInstance();
             Plane plane = new Plane(id, brand, model, maxCapacity, airline);
             ArrayList<Plane> avionCopy = new ArrayList<>();
             avionCopy.add(plane.clonar());
-            
-            
+
             if (!storage.addAvion(new Plane(id, brand, model, maxCapacity, airline))) {
-                return new Response("el avion ya existe", Status.BAD_REQUEST); 
+                return new Response("el avion ya existe", Status.BAD_REQUEST);
             }
             return new Response("el avion se creo exitosamente", Status.CREATED, avionCopy);
-            
-            
-            
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
-        
+
     }
-    
-     public static Response getSortedPlanes() {
+
+    public static Response getSortedPlanes() {
         try {
             ArrayList<Plane> aviones = Storage.getInstance().organizarAviones();
             ArrayList<Plane> copiaAviones = new ArrayList<>();
@@ -92,7 +88,7 @@ public class PlaneControllers {
                     }
                 }
             }
-            return new Response("Planes loaded succesfully.", Status.OK, copiaAviones);
+            return new Response("los aviones se agregaron con exito.", Status.OK, copiaAviones);
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }

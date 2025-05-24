@@ -186,6 +186,17 @@ public class Storage {
         sortedFlights.sort(Comparator.comparing(Flight::getDepartureDate));
         return sortedFlights;
     }
+    
+     public ArrayList<Location> organizarAirport() {
+        ArrayList<Location> sortedLocation = new ArrayList<>(aereopuerto);
+        for (Location l : aereopuerto) {
+            if (l != null) {
+                sortedLocation.add(l);
+            }
+        }
+        sortedLocation.sort(Comparator.comparing(Location::getAirportId));
+        return sortedLocation;
+    }
 
     public ArrayList<Plane> getSortedPlanes() {
         ArrayList<Plane> sortedPlanes = new ArrayList<>(avion);

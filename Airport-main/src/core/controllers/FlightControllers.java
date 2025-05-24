@@ -55,12 +55,12 @@ public class FlightControllers {
             }
 
             String min = minutesDurationArrival + "";
-            if (min.equals("")) {
+            if (min== null || min.trim().isEmpty()) {
                 return new Response("no se ingreso minutos de llegada", Status.BAD_REQUEST);
             }
 
             String locacion1 = departureLocation + "";
-            if (locacion1.equals("")) {
+            if (locacion1== null || locacion1.trim().isEmpty()) {
                 return new Response("no se ingreso la locacion de salida", Status.BAD_REQUEST);
             }
 
@@ -72,7 +72,7 @@ public class FlightControllers {
                 return new Response("el tiempo debe ser mayor a cero", Status.BAD_REQUEST);
             }
             String locacion2 = arrivalLocation + "";
-            if (locacion2.equals("")) {
+            if (locacion2== null || locacion2.trim().isEmpty()) {
                 return new Response("no se ingreso la locacion de llegada", Status.BAD_REQUEST);
             }
 
@@ -108,26 +108,26 @@ public class FlightControllers {
             try {
                 passengerIdLong = Long.parseLong(passengerId.trim());
                 if (passengerIdLong <= 0) {
-                    return new Response("Passenger id must be positive.", Status.BAD_REQUEST);
+                    return new Response("la id del pasajero debe ser un número.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Passenger id must be a number.", Status.BAD_REQUEST);
+                return new Response("la id del pasajero debe ser un número", Status.BAD_REQUEST);
             }
             if (passengerId.trim().length() > 15) {
-                return new Response("Passenger id must have a maximum of 15 digits.", Status.BAD_REQUEST);
+                return new Response("la id del pasajero debe ser menor a 15 digitos", Status.BAD_REQUEST);
             }
             if (Storage.getInstance().getPassenger(passengerIdInt) != null) {
-                return new Response("Passenger id must be unique.", Status.BAD_REQUEST);
+                return new Response("la id del pasajero debe ser unica", Status.BAD_REQUEST);
             }
 
             // Válidar flightId
             if (flightId == null || flightId.trim().isEmpty()) {
-                return new Response("Flight id must be not empty.", Status.BAD_REQUEST);
+                return new Response("no se registro la id del vuelo", Status.BAD_REQUEST);
             }
             try {
                 flightIdInt = Integer.parseInt(flightId.trim());
             } catch (NumberFormatException ex) {
-                return new Response("Flight id must be a number.", Status.BAD_REQUEST);
+                return new Response("la id del vuelo debe ser un número.", Status.BAD_REQUEST);
             }
 
             Storage.getInstance().getPassenger(passengerIdInt).addFlight(Storage.getInstance().getVuelo(flightIdInt));
@@ -146,42 +146,33 @@ public class FlightControllers {
             String hoursStr = hours + "";
             String minutesStr = minutes + "";
 
-            // Válidar flightId
             if (flightId == null || flightId.trim().isEmpty()) {
-                return new Response("Flight id must be not empty.", Status.BAD_REQUEST);
+                return new Response("campo de vuelo no se ha registrado", Status.BAD_REQUEST);
             }
             try {
                 flightIdInt = Integer.parseInt(flightId.trim());
             } catch (NumberFormatException ex) {
-                return new Response("Flight id must be a number.", Status.BAD_REQUEST);
+                return new Response("campo de id de vuelo debe ser un número ", Status.BAD_REQUEST);
             }
 
             // Válidar hours
             if (hoursStr == null || hoursStr.trim().isEmpty()) {
-                return new Response("Hours must be not empty.", Status.BAD_REQUEST);
+                return new Response("campo de Horas no debe estar vacio", Status.BAD_REQUEST);
             }
-            /*}try {
-                hours = Integer.parseInt(hours.trim());
-            } catch (Exception ex) {
-                return new Response("Hours must be a number.", Status.BAD_REQUEST);
-            }*/
+           
 
             // Válidar minutes
             if (minutesStr == null || minutesStr.trim().isEmpty()) {
-                return new Response("Minutes must be not empty.", Status.BAD_REQUEST);
+                return new Response("campo de minutos no se ha registrado", Status.BAD_REQUEST);
             }
-            /*try {
-                minutesInt = Integer.parseInt(minutes.trim());
-            } catch (Exception ex) {
-                return new Response("Minutes must be a number.", Status.BAD_REQUEST);
-            }*/
+            
 
             if (hours <= 0 && minutes <= 0) {
-                return new Response("Delay time must be a longest that 00:00.", Status.BAD_REQUEST);
+                return new Response("la hora de retraso debe ser mayor a 00:o00.", Status.BAD_REQUEST);
             }
 
             Storage.getInstance().getVuelo(flightIdInt).delay(hours, minutes);
-            return new Response("Delay apply succesfully.", Status.OK);
+            return new Response("se retraso el vuelo con exito.", Status.OK);
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
@@ -200,7 +191,7 @@ public class FlightControllers {
                     }
                 }
             }
-            return new Response("Flights loaded succesfully.", Status.OK, flightsCopy);
+            return new Response("los vuelos se ordenaron con exito", Status.OK, flightsCopy);
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }

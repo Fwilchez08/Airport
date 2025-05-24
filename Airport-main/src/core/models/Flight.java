@@ -28,6 +28,7 @@ public class Flight {
     private int hoursDurationScale;
     private int minutesDurationScale;
     
+     private Plane planeObject;
 
     public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
@@ -151,5 +152,13 @@ public class Flight {
     
     public Flight clonar() {
         return new Flight(this);
+    }
+    
+    public void setPlaneObject(Plane plane) {
+        this.planeObject = plane;
+    }
+    
+    public Plane getPlaneObject() {
+        return this.planeObject;
     }
 }
