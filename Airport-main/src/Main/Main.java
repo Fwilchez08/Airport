@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import core.models.Flight;
 import core.models.Location;
 import core.models.Plane;
+import core.models.storage.Storage;
 
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -30,12 +31,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        List<Flight> flights= new ArrayList<>();;
-        List<Plane> planes= new ArrayList<>();;
-        List<Passenger> passengers= new ArrayList<>();;
-        List<Location> locations= new ArrayList<>();;
+        List<Flight> flights = new ArrayList<>();;
+        List<Plane> planes = new ArrayList<>();;
+        List<Passenger> passengers = new ArrayList<>();;
+        List<Location> locations = new ArrayList<>();;
 
         Gson gson = new Gson();
+        for (Plane plane : planes) {
+            Storage.getInstance().addAvion(plane);
+        }
+        for (Location location : locations) {
+            Storage.getInstance().addAerepuerto(location);
+        }
 
         try {
 
@@ -138,6 +145,19 @@ public class Main {
             if (scale != null) {
                 scale.addScale(f); // si implementas escala
             }
+        }
+
+        for (Plane plane : planes) {
+            Storage.getInstance().addAvion(plane);
+        }
+        for (Location location : locations) {
+            Storage.getInstance().addAerepuerto(location);
+        }
+        for (Passenger passenger : passengers) {
+            Storage.getInstance().addPerson(passenger);
+        }
+        for (Flight flight : flights) {
+            Storage.getInstance().addVuelo(flight);
         }
     }
 

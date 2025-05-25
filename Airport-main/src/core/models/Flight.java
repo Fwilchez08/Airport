@@ -4,6 +4,8 @@
  */
 package core.models;
 
+import core.utils.Observer;
+import core.utils.Sujeto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Flight {
+public class Flight extends Sujeto {
     
     private final String id;
     private ArrayList<Passenger> passengers;
@@ -85,6 +87,8 @@ public class Flight {
     
     public void addPassenger(Passenger passenger) {
         this.passengers.add(passenger);
+        
+        notificarObservadores(); 
     }
     
     public String getId() {

@@ -7,6 +7,7 @@ package core.controllers;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
+import core.models.Location;
 import core.models.Plane;
 import core.models.storage.Storage;
 import java.time.LocalDateTime;
@@ -20,10 +21,8 @@ public class PlaneControllers {
 
     public static Response crearAvion(String id, String brand, String model, int maxCapacity, String airline) {
         try {
-            String maxCapacityStr = maxCapacity + "";
-            int idInt = Integer.parseInt(id);
 
-            if (id == null && id.trim().isEmpty()) {
+            if (id == null || id.trim().isEmpty()) {
                 return new Response("el id de el avion no puede estar vacío", Status.BAD_REQUEST);
             }
 
@@ -44,23 +43,16 @@ public class PlaneControllers {
                 return new Response("Modelo no se ha registrado", Status.BAD_REQUEST);
             }
 
-            // válidar maxCapacity
-            if (maxCapacityStr == null || maxCapacityStr.trim().isEmpty()) {
-                return new Response("Capacidad Maxima no se ha registrado", Status.BAD_REQUEST);
+            if (maxCapacity < 0) {
+                return new Response("Capacidad Maxima debe ser positiva", Status.BAD_REQUEST);
             }
-            try {
-                //maxCapacityInt = Integer.parseInt(maxCapacity.trim());
-                if (maxCapacity < 0) {
-                    return new Response("Capacidad Maxima debe ser positiva", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Capacidad Maxima debe ser un número.", Status.BAD_REQUEST);
-            }
+
             if (airline == null || airline.trim().isEmpty()) {
                 return new Response("Aereolinea no se4 ha registrado", Status.BAD_REQUEST);
             }
 
             Storage storage = Storage.getInstance();
+
             Plane plane = new Plane(id, brand, model, maxCapacity, airline);
             ArrayList<Plane> avionCopy = new ArrayList<>();
             avionCopy.add(plane.clonar());
@@ -68,8 +60,9 @@ public class PlaneControllers {
             if (!storage.addAvion(new Plane(id, brand, model, maxCapacity, airline))) {
                 return new Response("el avion ya existe", Status.BAD_REQUEST);
             }
-            return new Response("el avion se creo exitosamente", Status.CREATED, avionCopy);
+            return new Response("el avion se creo exitosamente", Status.CREATED);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
 

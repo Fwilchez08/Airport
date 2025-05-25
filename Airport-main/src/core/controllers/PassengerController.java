@@ -35,20 +35,17 @@ public class PassengerController {
             int phoneCodeInt;
             long phoneLong;
             int countryInt;
-            
+
             String codnum = countryPhoneCode + "";
-            
+
             String numlong = phone + "";
-            
-             String año = year + "";
-            
-            String idInt;
+            String año = year + "";
+
             int ageInt;
             boolean genderB;
 
             try {
-                idInt = id + "";
-                int longitudId = idInt.length();
+                int longitudId = id.length();
                 if (longitudId < 0 && longitudId > 15) {
                     return new Response("el id es invalida", Status.BAD_REQUEST);
                 }
@@ -57,64 +54,75 @@ public class PassengerController {
                 return new Response("la Id debe tener minimo 15 digitos", Status.BAD_REQUEST);
             }
 
-            int idint = Integer.parseInt(id);
-            if (Storage.getInstance().getPassenger(idint) != null) {
+            if (Storage.getInstance().getPassenger(id) != null) {
                 return new Response("la identificacion del pasagero debe ser unica", Status.BAD_REQUEST);
             }
-           
-             if (id== null || id.trim().isEmpty()) {
+
+            if (id == null || id.trim().isEmpty()) {
                 return new Response("no se ha ingresado el id", Status.BAD_REQUEST);
             }
-              if (codnum==  null || codnum.trim().isEmpty()) {
+            if (codnum == null || codnum.trim().isEmpty()) {
                 return new Response("no se ha ingresado el codigo", Status.BAD_REQUEST);
             }
-               if (firstname== null || firstname.trim().isEmpty()) {
+            if (firstname == null || firstname.trim().isEmpty()) {
                 return new Response("no se ha ingresado el nombre", Status.BAD_REQUEST);
             }
-                if (numlong== null || numlong.trim().isEmpty()) {
+            if (numlong == null || numlong.trim().isEmpty()) {
                 return new Response("no se ha ingresado el numero de telefono", Status.BAD_REQUEST);
             }
-            if (año== null || año.trim().isEmpty()) {
-                return new Response("no se ha ingresado el año de nacimiento", Status.BAD_REQUEST);
+
+            if (lastname == null || lastname.trim().isEmpty()) {
+                return new Response("no se ha ingresado el apellido", Status.BAD_REQUEST);
+            }
+            String mes = month + "";
+            if (mes == null || mes.trim().isEmpty()) {
+                return new Response("no se ha ingresado el mes", Status.BAD_REQUEST);
+            }
+            String dia = day + "";
+            if (dia == null || dia.trim().isEmpty()) {
+                return new Response("no se ha ingresado el dia", Status.BAD_REQUEST);
             }
 
-            if (lastname==null || lastname.trim().isEmpty()) {
-                return new Response("no se ha ingresado el nombre", Status.BAD_REQUEST);
+            if (año == null || año.trim().isEmpty()) {
+                return new Response("no se ha ingresado el año", Status.BAD_REQUEST);
+            }
+
+            if (country == null || country.trim().isEmpty()) {
+                return new Response("no se ha registrado el pais", Status.BAD_REQUEST);
             }
 
             try {
                 int longitud = año.length();
-                if (longitud > 5 || longitud <=0) {
+                if (longitud > 5 || longitud <= 0) {
                     return new Response("el año ingresado no es valido", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("el año debe tener 4 digitos", Status.BAD_REQUEST);
             }
-            
+
             int longcod = codnum.length();
             if (longcod < 0 && longcod > 3) {
                 return new Response("el codigo es invalido", Status.BAD_REQUEST);
             }
-            
+
             int longN = numlong.length();
             if (longN < 0 && longN < 11) {
                 return new Response("el numero es invalido", Status.BAD_REQUEST);
             }
 
             Storage storage = Storage.getInstance();
-            Passenger passenger= new Passenger(idint, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country); 
-            ArrayList<Passenger> passengersCopy = new ArrayList<>();
-            passengersCopy.add(passenger.clonar()); 
-            if (!storage.getInstance().addPerson(new Passenger(idint, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country))) {
+            Passenger passenger = new Passenger(id, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country);
+
+            if (!storage.getInstance().addPerson(new Passenger(id, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country))) {
                 return new Response("A person with that id already exists", Status.BAD_REQUEST);
             }
-            return new Response("El pasajero se creo con exito", Status.CREATED, passengersCopy);
+            return new Response("El pasajero se creo con exito", Status.CREATED);
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public static Response Actualizar(long id, String firsname, String lastname, int year, int month, int day, int phoneCode, long phone, String country) {
+    public static Response Actualizar(String id, String firsname, String lastname, int year, int month, int day, int phoneCode, long phone, String country) {
         try {
             long passengerIdLong;
             int firsnameInt;
@@ -123,8 +131,10 @@ public class PassengerController {
             int phoneCodeInt;
             long phoneLong;
             int countryInt;
+            
+            
 
-            String idStr = id + "";
+            /*String idStr = id + "";
             // Válidar passengerId
             if (idStr == null || idStr.trim().isEmpty()) {
                 return new Response("Passenger id must be not empty.", Status.BAD_REQUEST);
@@ -144,7 +154,7 @@ public class PassengerController {
             int idInt = Integer.parseInt(idStr.trim());
             if (Storage.getInstance().getPassenger(idInt) == null) {
                 return new Response("Passenger with that id not exits.", Status.BAD_REQUEST);
-            }
+            }*/
 
             // Válidar firstane
             if (firsname == null || firsname.trim().isEmpty()) {
@@ -247,17 +257,17 @@ public class PassengerController {
             } catch (NumberFormatException ex) {
 
             }
-            
-            Storage storage = Storage.getInstance();
-            Passenger passenger= new Passenger(passengerIdLong,firsname,lastname,LocalDate.of(year, month, day),phoneCode,phone,country); 
-            ArrayList<Passenger> passengersCopy = new ArrayList<>();
-            passengersCopy.add(passenger.clonar()); 
 
-            if (!storage.getInstance().actualizarPasajero(new Passenger(passengerIdLong,firsname,lastname,LocalDate.of(year, month, day),phoneCode,phone,country))) {
+            Storage storage = Storage.getInstance();
+            Passenger passenger = new Passenger(id, firsname, lastname, LocalDate.of(year, month, day), phoneCode, phone, country);
+            ArrayList<Passenger> passengersCopy = new ArrayList<>();
+            passengersCopy.add(passenger.clonar());
+
+            if (!storage.getInstance().actualizarPasajero(new Passenger(id, firsname, lastname, LocalDate.of(year, month, day), phoneCode, phone, country))) {
                 return new Response("Passenger id not found.", Status.NOT_FOUND);
             }
 
-            return new Response("Passenger updated succesfully.", Status.OK, passengersCopy);
+            return new Response("Passenger updated succesfully.", Status.OK);
 
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
@@ -266,27 +276,27 @@ public class PassengerController {
 
     public static Response mostrrarVuelos(String passengerId) {
         try {
-            int id = Integer.parseInt(passengerId);
-            long passengerIdLong;
+            //int id = Integer.parseInt(passengerId);
+            //long passengerIdLong;
             if (passengerId == null || passengerId.trim().isEmpty()) {
                 return new Response("Passenger id must be not empty.", Status.BAD_REQUEST);
             }
-            try {
-                passengerIdLong = Long.parseLong(passengerId.trim());
+            /*try {
+                //passengerIdLong = Long.parseLong(passengerId.trim());
                 if (passengerIdLong <= 0) {
                     return new Response("Passenger id must be positive.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("Passenger id must be a number.", Status.BAD_REQUEST);
-            }
+            }*/
             if (passengerId.trim().length() > 15) {
                 return new Response("Passenger id must have a maximum of 15 digits.", Status.BAD_REQUEST);
             }
-            if (Storage.getInstance().getPassenger(id) == null) {
+            if (Storage.getInstance().getPassenger(passengerId) == null) {
                 return new Response("Passenger id not exist.", Status.BAD_REQUEST);
             }
 
-            ArrayList<Flight> flights = Storage.getInstance().getPassengerFlights(Storage.getInstance().getPassenger(id));
+            ArrayList<Flight> flights = Storage.getInstance().getPassengerFlights(Storage.getInstance().getPassenger(passengerId));
             flights.sort(Comparator.comparing(Flight::getDepartureDate));
 
             ArrayList<Flight> flightsCopy = new ArrayList<>();
@@ -300,7 +310,7 @@ public class PassengerController {
                 }
             }
 
-            return new Response("Flights loaded succesfully.", Status.OK, flightsCopy);
+            return new Response("Flights loaded succesfully.", Status.OK);
 
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);

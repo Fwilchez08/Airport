@@ -5,13 +5,14 @@
 package core.models;
 
 import core.models.Flight;
+import core.utils.Sujeto;
 import java.util.ArrayList;
 
 /**
  *
  * @author edangulo
  */
-public class Plane {
+public class Plane extends Sujeto{
     
     private final String id;
     private String brand;
@@ -50,6 +51,8 @@ public class Plane {
 
     public void addFlight(Flight flight) {
         this.flights.add(flight);
+        
+        notificarObservadores();
     }
     
     public String getId() {

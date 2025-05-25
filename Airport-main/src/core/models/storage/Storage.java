@@ -18,6 +18,7 @@ import java.util.Comparator;
  */
 public class Storage {
 
+
     // Instancia Singleton
     private static Storage instance;
 
@@ -29,6 +30,9 @@ public class Storage {
 
     private Storage() {
         this.pass = new ArrayList<>();
+        this.vuelo = new ArrayList<>();
+        this.aereopuerto = new ArrayList<>();
+        this.avion = new ArrayList<>();
     }
 
     public static Storage getInstance() {
@@ -79,7 +83,7 @@ public class Storage {
         return true;
     }
 
-    public Passenger getPassenger(int id) {
+    public Passenger getPassenger(String id) {
         for (Passenger passenger : this.pass) {
             if (passenger.getId() == id) {
                 return passenger;
@@ -97,7 +101,7 @@ public class Storage {
         return null;
     }
 
-    public Flight getVuelo(int id) {
+    public Flight getVuelo(String id) {
         for (Flight flight : this.vuelo) {
             if (flight.getId().equals(id)) {
                 return flight;
@@ -115,7 +119,7 @@ public class Storage {
         return null;
     }
 
-    public boolean delPerson(int id) {
+    public boolean delPerson(String id) {
         for (Passenger pass : this.pass) {
             if (pass.getId() == id) {
                 this.pass.remove(pass);
@@ -172,7 +176,7 @@ public class Storage {
                 sortedPassengers.add(p);
             }
         }
-        sortedPassengers.sort(Comparator.comparingLong(Passenger::getId));
+        sortedPassengers.sort(Comparator.comparing(Passenger::getId));
         return sortedPassengers;
     }
     

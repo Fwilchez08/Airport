@@ -5,6 +5,7 @@
 package core.models;
 
 import core.models.Flight;
+import core.utils.Sujeto;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Passenger {
+public class Passenger extends Sujeto {
     
-    public final long id;
+    public String id;
     private String firstname;
     private String lastname;
     private LocalDate birthDate;
@@ -24,7 +25,7 @@ public class Passenger {
     private String country;
     private ArrayList<Flight> flights;
 
-    public Passenger(long id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
+    public Passenger(String id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -56,9 +57,10 @@ public class Passenger {
     }
     public void addFlight(Flight flight) {
         this.flights.add(flight);
+        notificarObservadores();
     }
     
-    public long getId() {
+    public String getId() {
         return id;
     }
 

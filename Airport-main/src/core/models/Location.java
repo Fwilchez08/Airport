@@ -4,6 +4,7 @@
  */
 package core.models;
 
+import core.utils.Sujeto;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author edangulo
  */
-public class Location {
+public class Location extends Sujeto{
     
     private final String airportId;
     private String airportName;
@@ -84,14 +85,17 @@ public class Location {
 
     public void addArrival(Flight flight) {
         arrivals.add(flight);
+        notificarObservadores();
     }
 
     public void addScale(Flight flight) {
         scales.add(flight);
+        notificarObservadores();
     }
 
     public void addDeparture(Flight f) {
         departures.add(f);
+        notificarObservadores();
     }
     
     
