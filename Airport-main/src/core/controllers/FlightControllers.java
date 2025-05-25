@@ -31,34 +31,15 @@ public class FlightControllers {
                 return new Response("La ID del avión debe seguir el formato: AAA999 (ej: MAS123)", Status.BAD_REQUEST);
             }
            
-           if (PlaneId == null || PlaneId.trim().isEmpty()) {
+           /*if (PlaneId == null || PlaneId.trim().isEmpty()) {
                 return new Response("El ID del avión no puede estar vacío", Status.BAD_REQUEST);
             }
             if (!PlaneId.matches("^[A-Z]{3}\\d{3}$")) {
                 return new Response("La ID del avión debe seguir el formato: AAA999 (ej: MAS123)", Status.BAD_REQUEST);
-            }
-
-            
-            /*if(Storage.getInstance().getVuelo(id)!=null){
-                return new Response("la id debe ser unica", Status.BAD_REQUEST); 
             }*/
+
             if (hoursDurationArrival <= 0) {
                 return new Response("la hora de llegada debe ser positiva  y diferente de cero", Status.BAD_REQUEST);
-            }
-            
-            Storage storage = Storage.getInstance();
-
-            Plane avion = storage.getAvion(PlaneId);
-            if (avion == null) {
-                return new Response("Avión no encontrado", Status.BAD_REQUEST);
-            }
-            Location locSalida = storage.getAereopurto(departureLocation);
-            if (locSalida == null) {
-                return new Response("locacion salida no encontrada", Status.BAD_REQUEST);
-            }
-            Location locLlegada = storage.getAereopurto(arrivalLocation);
-            if (locLlegada == null) {
-                return new Response("locaciob llegada no encontrada", Status.BAD_REQUEST);
             }
             
             
@@ -96,15 +77,18 @@ public class FlightControllers {
 
             }
 
-            /*Flight flight = new Flight(PlaneId, Storage.getInstance().getAvion(PlaneId), Storage.getInstance().getAereopurto(departureLocation), Storage.getInstance().getAereopurto(arrivalLocation), LocalDateTime.of(year, month, day, hoursDurationArrival, minutesDurationArrival, 1), hoursDurationArrival, minutesDurationArrival);
-            ArrayList<Flight> vueloCopy = new ArrayList<>();
-            vueloCopy.add(flight.clonar());
+            Storage storage = Storage.getInstance();
 
-            Flight vuelo = new Flight(PlaneId, Storage.getInstance().getAvion(PlaneId), Storage.getInstance().getAereopurto(departureLocation), Storage.getInstance().getAereopurto(arrivalLocation), LocalDateTime.of(year, month, day, hoursDurationArrival, minutesDurationArrival, 1), hoursDurationArrival, minutesDurationArrival);
-
-            if (!storage.getInstance().addVuelo(vuelo)) {
-                return new Response("el vuelo ya existe", Status.BAD_REQUEST);
-            }*/
+            
+            Location locSalida = storage.getAereopurto(departureLocation);
+            if (locSalida == null) {
+                return new Response("locacion salida no encontrada", Status.BAD_REQUEST);
+            }
+            
+            Location locLlegada = storage.getAereopurto(arrivalLocation);
+            if (locLlegada == null) {
+                return new Response("locaciob llegada no encontrada", Status.BAD_REQUEST);
+            }
             
              Location origen = storage.getAereopurto(departureLocation);
             if (origen == null) {
@@ -122,9 +106,13 @@ public class FlightControllers {
             } catch (Exception ex) {
                 return new Response("Fecha de vuelo inválida", Status.BAD_REQUEST);
             }
-
             
-            Flight vuelo = new Flight(id, avion, origen, destino, fechaVuelo, hoursDurationArrival, minutesDurationArrival);
+            Plane avion = storage.getAvion(PlaneId);
+            if (avion == null) {
+                return new Response("Avión no encontrado", Status.BAD_REQUEST);
+            }
+            Flight vuelo = new Flight(PlaneId, Storage.getInstance().getAvion(PlaneId), Storage.getInstance().getAereopurto(departureLocation), Storage.getInstance().getAereopurto(arrivalLocation), LocalDateTime.of(year, month, day, hoursDurationArrival, minutesDurationArrival, 1), hoursDurationArrival, minutesDurationArrival);
+            //Flight vuelo = new Flight(id, avion, origen, destino, fechaVuelo, hoursDurationArrival, minutesDurationArrival);
 
             if (!storage.addVuelo(vuelo)) {
                 return new Response("El vuelo ya existe", Status.BAD_REQUEST);
@@ -142,7 +130,6 @@ public class FlightControllers {
 
     public static Response addFlight(String passengerId, String flightId) {
         try {
-            //long passengerIdLong;
 
 
             // Válidar passengerId
@@ -187,11 +174,6 @@ public class FlightControllers {
             if (flightId == null || flightId.trim().isEmpty()) {
                 return new Response("campo de vuelo no se ha registrado", Status.BAD_REQUEST);
             }
-            /*try {
-                flightIdInt = Integer.parseInt(flightId.trim());
-            } catch (NumberFormatException ex) {
-                return new Response("campo de id de vuelo debe ser un número ", Status.BAD_REQUEST);
-            }*/
 
             // Válidar hours
             if (hoursStr == null || hoursStr.trim().isEmpty()) {

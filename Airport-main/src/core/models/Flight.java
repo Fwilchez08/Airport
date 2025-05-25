@@ -29,6 +29,9 @@ public class Flight extends Sujeto {
     private int minutesDurationArrival;
     private int hoursDurationScale;
     private int minutesDurationScale;
+    private ArrayList<Flight> vuelo;
+    private ArrayList<Location> aereopuerto;
+    private ArrayList<Plane> avion;
     
      private Plane planeObject;
 

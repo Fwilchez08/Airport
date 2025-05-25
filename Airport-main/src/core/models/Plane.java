@@ -20,6 +20,8 @@ public class Plane extends Sujeto{
     private final int maxCapacity;
     private String airline;
     private ArrayList<Flight> flights;
+    private ArrayList<Location> aereopuerto;
+    private ArrayList<Plane> avion;
 
     public Plane(String id, String brand, String model, int maxCapacity, String airline) {
         this.id = id;

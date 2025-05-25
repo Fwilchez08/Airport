@@ -1486,9 +1486,7 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            
-            //this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
-            //this.usuario.addItem("" + id);
+
 
             ID.setText("");
             nombre.setText("");
@@ -1551,12 +1549,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String country = paisA.getText();
         String latitude = latitudA.getText();
         String longitude = longitudA.getText();
-        /*double latitude = Double.parseDouble(latitudA.getText());
-        double longitude = Double.parseDouble(longitudA.getText());*/
 
-        
-        
-        
         Response response = airportControllers.CrearAereopuerto(id, name, city, country, latitude, longitude);
 
         if (response.getStatus() >= 500) {
@@ -1565,8 +1558,6 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            
-            //this.locations.add(new Location(id, name, city, country, latitude, longitude));
             
             idAereopuerto.setText("");
             nombreA.setText("");
@@ -1600,37 +1591,7 @@ public class AirportFrame extends javax.swing.JFrame {
         int hoursDurationsScale = Integer.parseInt(HOUR3.getItemAt(HOUR3.getSelectedIndex()));
         int minutesDurationsScale = Integer.parseInt(MIN3.getItemAt(MIN3.getSelectedIndex()));
         
-        long idLong = Long.parseLong(id);
-        /*long idLong = Long.parseLong(id); 
-        LocalDateTime departureDate= LocalDateTime.of(year,month, day, hour, minutes); 
-        Plane plane= null; 
-        for(Plane p: this.planes){
-            if(planeId.equals(p.getId())){
-                plane= p; 
-            }
-        }
-        Location departure = null;
-        Location arrival = null;
-        Location scale = null;
-        for (Location location : this.locations) {
-            if (departureLocationId.equals(location.getAirportId())) {
-                departure = location;
-            }
-            if (arrivalLocationId.equals(location.getAirportId())) {
-                arrival = location;
-            }
-            if (scaleLocationId.equals(location.getAirportId())) {
-                scale = location;
-            }
-        }
-
-        if (scale == null) {
-            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
-        } else {
-            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
-        }
-            this.TipoVuelo.addItem(id);*/
-            
+                    
         Response response = FlightControllers.CrearVuelo(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year,month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
 
         if (response.getStatus() >= 500) {
@@ -1694,9 +1655,7 @@ public class AirportFrame extends javax.swing.JFrame {
         int phoneCode = Integer.parseInt(codNew.getText());
         long phone = Long.parseLong(numeroNew.getText());
         String country = paisNew.getText();
-        
-        
-        //LocalDate birthDate = LocalDate.of(year, month, day);
+       
 
         Passenger passenger = null;
         
@@ -1711,19 +1670,6 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            
-            /*for (Passenger p : this.passengers) {
-                if (p.getId() == id) {
-                    passenger = p;
-                }
-            }
-
-            passenger.setFirstname(firstname);
-            passenger.setLastname(lastname);
-            passenger.setBirthDate(birthDate);
-            passenger.setCountryPhoneCode(phoneCode);
-            passenger.setPhone(phone);
-            passenger.setCountry(country);*/
             
             IDnew.setText("");
             NombreNew.setText("");
@@ -1750,21 +1696,6 @@ public class AirportFrame extends javax.swing.JFrame {
         String passengerIdStr= IDvuelo.getText();
         long passengerId = Long.parseLong(IDvuelo.getText());
         String flightId = TipoVuelo.getItemAt(TipoVuelo.getSelectedIndex());
-
-        /*Passenger passenger = null;
-        Flight flight = null;
-
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
-        }
-
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }*/
         
         Response response = FlightControllers.addFlight(passengerIdStr, flightId);
 
@@ -1778,9 +1709,6 @@ public class AirportFrame extends javax.swing.JFrame {
             if(TipoVuelo.getItemCount()>0){
                 TipoVuelo.setSelectedIndex(0);
             }
-            /*passenger.addFlight(flight);
-            flight.addPassenger(passenger);
-            Flight vuelo= flight.clonar(); */
             
         }
     }//GEN-LAST:event_AñadirActionPerformed
@@ -1790,15 +1718,6 @@ public class AirportFrame extends javax.swing.JFrame {
         String flightId = idRetraso.getItemAt(idRetraso.getSelectedIndex());
         int hours = Integer.parseInt(horaRetraso.getItemAt(horaRetraso.getSelectedIndex()));
         int minutes = Integer.parseInt(minRetraso.getItemAt(minRetraso.getSelectedIndex()));
-
-        /*Flight flight = null;
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }*/
-
-        
         
         
          Response response = FlightControllers.delayFlight(flightId, hours, minutes);
@@ -1837,12 +1756,6 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         }
 
-        /*ArrayList<Flight> flights = passenger.getFlights();
-        DefaultTableModel model = (DefaultTableModel) TablaVuelos.getModel();
-        model.setRowCount(0);
-        for (Flight flight : flights) {
-            model.addRow(new Object[]{flight.getId(), flight.getDepartureDate(), flight.calculateArrivalDate()});
-        }*/
         
         Response response = PassengerController.mostrrarVuelos(IDstring);
         if(response.getStatus()>=500){

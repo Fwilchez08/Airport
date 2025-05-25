@@ -45,7 +45,7 @@ public class Storage {
   
     public boolean addPerson(Passenger passenger) {
         for (Passenger p : this.pass) {
-            if (p.getId() == passenger.getId()) {
+            if (p.getId().equals(passenger.getId())) {
                 return false;
             }
         }
@@ -55,7 +55,7 @@ public class Storage {
 
     public boolean addVuelo(Flight flight) {
         for (Flight f : this.vuelo) {
-            if (f.getId() == flight.getId()) {
+            if (f.getId().equals(flight.getId())) {
                 return false;
             }
         }
@@ -85,7 +85,7 @@ public class Storage {
 
     public Passenger getPassenger(String id) {
         for (Passenger passenger : this.pass) {
-            if (passenger.getId() == id) {
+            if (passenger.getId().equals(id)) {
                 return passenger;
             }
         }
@@ -121,7 +121,7 @@ public class Storage {
 
     public boolean delPerson(String id) {
         for (Passenger pass : this.pass) {
-            if (pass.getId() == id) {
+            if (pass.getId().equals(id)) {
                 this.pass.remove(pass);
                 return true;
             }
@@ -143,7 +143,7 @@ public class Storage {
     public boolean actualizarPasajero(Passenger passenger) {
         Passenger updatePassenger = null;
         for (Passenger p : pass) {
-            if (p.getId() == passenger.getId()) {
+            if (p.getId().equals(passenger.getId())) {
                 updatePassenger = p;
                 break;
             }
@@ -162,7 +162,7 @@ public class Storage {
     
     public ArrayList<Flight> getPassengerFlights(Passenger passenger) {
         for (Passenger p : pass) {
-            if (p.getId() == passenger.getId()) {
+            if (p.getId().equals( passenger.getId())) {
                 return passenger.getFlights();
             }
         }

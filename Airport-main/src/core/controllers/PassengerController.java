@@ -124,37 +124,16 @@ public class PassengerController {
 
     public static Response Actualizar(String id, String firsname, String lastname, int year, int month, int day, int phoneCode, long phone, String country) {
         try {
-            long passengerIdLong;
             int firsnameInt;
             int lastnameInt;
             int yearInt, monthInt, dayInt;
             int phoneCodeInt;
             long phoneLong;
             int countryInt;
-            
-            
 
-            /*String idStr = id + "";
-            // Válidar passengerId
-            if (idStr == null || idStr.trim().isEmpty()) {
-                return new Response("Passenger id must be not empty.", Status.BAD_REQUEST);
-            }
-            try {
-                passengerIdLong = Long.parseLong(idStr.trim());
-                if (passengerIdLong <= 0) {
-                    return new Response("Passenger id must be positive.", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Passenger id must be a number.", Status.BAD_REQUEST);
-            }
-            if (idStr.trim().length() > 15) {
-                return new Response("Passenger id must have a maximum of 15 digits.", Status.BAD_REQUEST);
-            }
-
-            int idInt = Integer.parseInt(idStr.trim());
-            if (Storage.getInstance().getPassenger(idInt) == null) {
+            if (Storage.getInstance().getPassenger(id) == null) {
                 return new Response("Passenger with that id not exits.", Status.BAD_REQUEST);
-            }*/
+            }
 
             // Válidar firstane
             if (firsname == null || firsname.trim().isEmpty()) {
@@ -276,19 +255,10 @@ public class PassengerController {
 
     public static Response mostrrarVuelos(String passengerId) {
         try {
-            //int id = Integer.parseInt(passengerId);
-            //long passengerIdLong;
+
             if (passengerId == null || passengerId.trim().isEmpty()) {
                 return new Response("Passenger id must be not empty.", Status.BAD_REQUEST);
             }
-            /*try {
-                //passengerIdLong = Long.parseLong(passengerId.trim());
-                if (passengerIdLong <= 0) {
-                    return new Response("Passenger id must be positive.", Status.BAD_REQUEST);
-                }
-            } catch (NumberFormatException ex) {
-                return new Response("Passenger id must be a number.", Status.BAD_REQUEST);
-            }*/
             if (passengerId.trim().length() > 15) {
                 return new Response("Passenger id must have a maximum of 15 digits.", Status.BAD_REQUEST);
             }

@@ -53,18 +53,19 @@ public class airportControllers {
             } catch (NumberFormatException ex) {
                 return new Response("la longitud debe estar al menos 4 cifras decimales", Status.BAD_REQUEST);
             }
-            int latitude = Integer.parseInt(airportLatitude);
+            double Latitud = Double.parseDouble(airportLatitude);
+            double Longitud = Double.parseDouble(airportLongitude);
             try {
-                if (latitude > 90 && latitude < -90) {
+                if (Latitud > 90 && Latitud < -90) {
                     return new Response("la latitud no esta en el perimetro requerido", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("la id debe estar entre -90, 90", Status.BAD_REQUEST);
             }
 
-            int longitude = Integer.parseInt(airportLongitude);
+            
             try {
-                if (longitude > 180 && longitude < -180) {
+                if (Longitud > 180 && Longitud < -180) {
                     return new Response("la longitud no esta en el perimetro requerido", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
@@ -94,8 +95,7 @@ public class airportControllers {
                 return new Response("no se registro la longitud del aereopuerto", Status.BAD_REQUEST);
             }
 
-            double Latitud = Double.parseDouble(airportLatitude);
-            double Longitud = Double.parseDouble(airportLongitude);
+            
             
             Storage storage = Storage.getInstance();
             Location location = new Location(airportId, airportName, airportCity, airportCountry, Latitud, Longitud);
@@ -107,6 +107,7 @@ public class airportControllers {
             }
             return new Response("el aereopuerto ha sido creado", Status.CREATED);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
