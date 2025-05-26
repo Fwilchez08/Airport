@@ -7,21 +7,20 @@ package core.models;
 import core.models.Flight;
 import core.utils.Sujeto;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
  * @author edangulo
  */
 public class Plane extends Sujeto{
-    
-    private final String id;
+     private final String id;
     private String brand;
     private String model;
     private final int maxCapacity;
     private String airline;
-    private ArrayList<Flight> flights;
-    private ArrayList<Location> aereopuerto;
-    private ArrayList<Plane> avion;
+    private List<Flight> flights;
 
     public Plane(String id, String brand, String model, int maxCapacity, String airline) {
         this.id = id;
@@ -33,29 +32,29 @@ public class Plane extends Sujeto{
     }
     
     public Plane(Plane plane) {
-        this.id = plane.id;
-        this.brand = plane.brand;
-        this.model = plane.model;
-        this.maxCapacity = plane.maxCapacity;
-        this.airline = plane.airline;
-        this.flights = new ArrayList<>();
+        this(plane.id, plane.brand, plane.model, plane.maxCapacity, plane.airline);
         if (plane.flights != null) {
             for (Flight flight : plane.flights) {
-                if (flight != null) {
-                    this.flights.add(flight.clonar());
-                } else {
-                    this.flights.add(null);
-                }
+                this.flights.add(flight != null ? flight.clonar() : null);
             }
         }
     }
-    
 
     public void addFlight(Flight flight) {
+        if (flight == null) {
+            throw new IllegalArgumentException("Flight cannot be null");
+        }
         this.flights.add(flight);
-        
-        notificarObservadores();
     }
+
+    public List<Flight> getFlights() {
+        return Collections.unmodifiableList(flights);
+    }
+
+    public Plane clonar() {
+        return new Plane(this);
+    }
+
     
     public String getId() {
         return id;
@@ -77,16 +76,21 @@ public class Plane extends Sujeto{
         return airline;
     }
 
-    public ArrayList<Flight> getFlights() {
-        return flights;
-    }
-    
     public int getNumFlights() {
         return flights.size();
     }
+
     
-    public Plane clonar() {
-        return new Plane(this);
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
     }
     
 }

@@ -16,16 +16,14 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  *
  * @author Fiorella W C
  */
 public class PassengerController {
-
-    Scanner leer = new Scanner(System.in);
-
-    public static Response AgregarPasajeros(String id, String firstname, String lastname, int year, int month, int day, int countryPhoneCode, long phone, String country) {
+     public static Response AgregarPasajeros(String id, String firstname, String lastname, int year, int month, int day, int countryPhoneCode, long phone, String country) {
 
         try {
             long passengerIdLong;
@@ -111,13 +109,13 @@ public class PassengerController {
             }
 
             Storage storage = Storage.getInstance();
-            Passenger passenger = new Passenger(id, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country);
-
+            
             if (!storage.getInstance().addPerson(new Passenger(id, firstname, lastname, LocalDate.of(year, month, day), countryPhoneCode, phone, country))) {
                 return new Response("A person with that id already exists", Status.BAD_REQUEST);
             }
             return new Response("El pasajero se creo con exito", Status.CREATED);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -131,9 +129,9 @@ public class PassengerController {
             long phoneLong;
             int countryInt;
 
-            if (Storage.getInstance().getPassenger(id) == null) {
+            /*if (Storage.getInstance().getPassenger(id) == null) {
                 return new Response("Passenger with that id not exits.", Status.BAD_REQUEST);
-            }
+            }*/
 
             // Válidar firstane
             if (firsname == null || firsname.trim().isEmpty()) {
@@ -239,8 +237,6 @@ public class PassengerController {
 
             Storage storage = Storage.getInstance();
             Passenger passenger = new Passenger(id, firsname, lastname, LocalDate.of(year, month, day), phoneCode, phone, country);
-            ArrayList<Passenger> passengersCopy = new ArrayList<>();
-            passengersCopy.add(passenger.clonar());
 
             if (!storage.getInstance().actualizarPasajero(new Passenger(id, firsname, lastname, LocalDate.of(year, month, day), phoneCode, phone, country))) {
                 return new Response("Passenger id not found.", Status.NOT_FOUND);
@@ -249,6 +245,7 @@ public class PassengerController {
             return new Response("Passenger updated succesfully.", Status.OK);
 
         } catch (Exception ex) {
+           ex.printStackTrace(); 
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }

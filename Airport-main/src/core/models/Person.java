@@ -10,8 +10,10 @@ package core.models;
  */
 public class Person {
 
-    public boolean getId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    protected String id;
+
+    public String getId() {
+        return id;
     }
     
 }

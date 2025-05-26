@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Fiorella W C
  */
 public class airportControllers {
-
     public static Response CrearAereopuerto(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
         try {
             BigDecimal number1 = new BigDecimal(airportLatitude);
@@ -99,8 +99,6 @@ public class airportControllers {
             
             Storage storage = Storage.getInstance();
             Location location = new Location(airportId, airportName, airportCity, airportCountry, Latitud, Longitud);
-            ArrayList<Location> airportCopy = new ArrayList<>();
-            airportCopy.add(location.clonar());
 
             if (!storage.addAerepuerto(new Location(airportId, airportName, airportCity, airportCountry, Latitud, Longitud))) {
                 return new Response("A person with that id already exists", Status.BAD_REQUEST);

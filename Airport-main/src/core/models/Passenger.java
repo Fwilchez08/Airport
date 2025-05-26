@@ -4,28 +4,42 @@
  */
 package core.models;
 
-import core.models.Flight;
+/*import core.models.Flight;
 import core.utils.Sujeto;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;*/
+import core.utils.Sujeto;
 import java.util.ArrayList;
+import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
  * @author edangulo
  */
 public class Passenger extends Sujeto {
+
+     private final String id;
+    private final LocalDate birthDate;
     
-    public String id;
+
     private String firstname;
     private String lastname;
-    private LocalDate birthDate;
     private int countryPhoneCode;
     private long phone;
     private String country;
-    private ArrayList<Flight> flights;
+    
+    
+    private final List<Flight> flights = new CopyOnWriteArrayList<>();
 
-    public Passenger(String id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
+    
+    public Passenger(String id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country1) {
+
+        
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -33,89 +47,121 @@ public class Passenger extends Sujeto {
         this.countryPhoneCode = countryPhoneCode;
         this.phone = phone;
         this.country = country;
-        this.flights = new ArrayList<>();
     }
     
+
     public Passenger(Passenger passenger) {
-        this.id = passenger.id;
-        this.firstname = passenger.firstname;
-        this.lastname = passenger.lastname;
-        this.birthDate = passenger.birthDate;
-        this.countryPhoneCode = passenger.countryPhoneCode;
-        this.phone = passenger.phone;
-        this.country = passenger.country;
-        this.flights = new ArrayList<>();
-        if (passenger.flights != null) {
-            for (Flight flight : passenger.flights) {
-                if (flight != null) {
-                    this.flights.add(flight.clonar());
-                } else {
-                    this.flights.add(null);
-                }
-            }
+        this(passenger.id, passenger.firstname, passenger.lastname, passenger.birthDate,
+             passenger.countryPhoneCode, passenger.phone, passenger.country);
+        
+        
+        passenger.flights.forEach(flight -> 
+            this.flights.add(flight != null ? flight.clonar() : null)
+        );
+    }
+    
+    
+   /* private void validateParameters(String id, String firstname, String lastname, 
+                                  LocalDate birthDate, int countryPhoneCode, 
+                                  long phone, String country) {
+        
+        if (firstname == null || firstname.trim().isEmpty()) {
+            throw new IllegalArgumentException("First name cannot be null or empty");
         }
-    }
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-        notificarObservadores();
-    }
+        if (lastname == null || lastname.trim().isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be null or empty");
+        }
+        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Invalid birth date");
+        }
+        if (countryPhoneCode <= 0) {
+            throw new IllegalArgumentException("Country code must be positive");
+        }
+        if (phone <= 0) {
+            throw new IllegalArgumentException("Phone number must be positive");
+        }
+        if (country == null || country.trim().isEmpty()) {
+            throw new IllegalArgumentException("Country cannot be null or empty");
+        }
+    }*/
     
     public String getId() {
         return id;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    
+    
     public String getFirstname() {
         return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        if (firstname == null || firstname.trim().isEmpty()) {
+            throw new IllegalArgumentException("First name cannot be null or empty");
+        }
+        this.firstname = firstname;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public void setLastname(String lastname) {
+        if (lastname == null || lastname.trim().isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be null or empty");
+        }
+        this.lastname = lastname;
     }
 
     public int getCountryPhoneCode() {
         return countryPhoneCode;
     }
 
+    public void setCountryPhoneCode(int countryPhoneCode) {
+        if (countryPhoneCode <= 0) {
+            throw new IllegalArgumentException("Country code must be positive");
+        }
+        this.countryPhoneCode = countryPhoneCode;
+    }
+
     public long getPhone() {
         return phone;
+    }
+
+    public void setPhone(long phone) {
+        if (phone <= 0) {
+            throw new IllegalArgumentException("Phone number must be positive");
+        }
+        this.phone = phone;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public ArrayList<Flight> getFlights() {
-        return flights;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public void setCountryPhoneCode(int countryPhoneCode) {
-        this.countryPhoneCode = countryPhoneCode;
-    }
-
-    public void setPhone(long phone) {
-        this.phone = phone;
-    }
-
-    public void setCountry(String country) {
+   /* public void setCountry(String country) {
+        if (country == null || country.trim().isEmpty()) {
+            throw new IllegalArgumentException("Country cannot be null or empty");
+        }
         this.country = country;
+    }*/
+    
+    
+    public List<Flight> getFlights() {
+        return Collections.unmodifiableList(flights);
+    }
+
+    public void addFlight(Flight flight) {
+        if (flight == null) {
+            throw new IllegalArgumentException("Flight cannot be null");
+        }
+        this.flights.add(flight);
     }
     
+   
     public String getFullname() {
         return firstname + " " + lastname;
     }
@@ -132,7 +178,13 @@ public class Passenger extends Sujeto {
         return flights.size();
     }
     
-     public Passenger clonar() {
+    public boolean hasInternationalFlights() {
+        return flights.stream()
+            .anyMatch(flight -> !flight.getArrivalLocation().getAirportCountry().equals(this.country));
+    }
+    
+   
+    public Passenger clonar() {
         return new Passenger(this);
     }
 }

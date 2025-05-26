@@ -12,13 +12,13 @@ import core.models.Plane;
 import core.models.storage.Storage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Fiorella W C
  */
 public class PlaneControllers {
-
     public static Response crearAvion(String id, String brand, String model, int maxCapacity, String airline) {
         try {
 
@@ -54,8 +54,7 @@ public class PlaneControllers {
             Storage storage = Storage.getInstance();
 
             Plane plane = new Plane(id, brand, model, maxCapacity, airline);
-            ArrayList<Plane> avionCopy = new ArrayList<>();
-            avionCopy.add(plane.clonar());
+
 
             if (!storage.addAvion(new Plane(id, brand, model, maxCapacity, airline))) {
                 return new Response("el avion ya existe", Status.BAD_REQUEST);
@@ -83,8 +82,10 @@ public class PlaneControllers {
             }
             return new Response("los aviones se agregaron con exito.", Status.OK, copiaAviones);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }
