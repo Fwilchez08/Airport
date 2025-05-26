@@ -104,7 +104,7 @@ public class FlightControllers {
             if (avion == null) {
                 return new Response("Avión no encontrado", Status.BAD_REQUEST);
             }
-            Flight vuelo = new Flight(PlaneId, Storage.getInstance().getAvion(PlaneId), Storage.getInstance().getAereopuerto(departureLocation), Storage.getInstance().getAereopuerto(arrivalLocation), LocalDateTime.of(year, month, day, hoursDurationArrival, minutesDurationArrival, 1), hoursDurationArrival, minutesDurationArrival);
+            Flight vuelo = new Flight(id, Storage.getInstance().getAvion(PlaneId), Storage.getInstance().getAereopuerto(departureLocation), Storage.getInstance().getAereopuerto(arrivalLocation), LocalDateTime.of(year, month, day, hoursDurationArrival, minutesDurationArrival, 1), hoursDurationArrival, minutesDurationArrival);
             //Flight vuelo = new Flight(id, avion, origen, destino, fechaVuelo, hoursDurationArrival, minutesDurationArrival);
 
             if (!storage.addVuelo(vuelo)) {
@@ -121,9 +121,6 @@ public class FlightControllers {
 
     public static Response addFlight(String passengerId, String flightId) {
         try {
-            long passengerIdLong = Integer.parseInt(passengerId);
-            int flightIdInt = Integer.parseInt(flightId);
-
             // Validar passengerId
             if (passengerId == null || passengerId.trim().isEmpty()) {
                 return new Response("Passenger ID must not be empty.", Status.BAD_REQUEST);
@@ -133,11 +130,6 @@ public class FlightControllers {
             if (flightId == null || flightId.trim().isEmpty()) {
                 return new Response("Flight ID must not be empty.", Status.BAD_REQUEST);
             }
-            try {
-                flightIdInt = Integer.parseInt(flightId.trim());
-            } catch (NumberFormatException ex) {
-                return new Response("Flight ID must be a number.", Status.BAD_REQUEST);
-            }
 
             // Verificar existencia de pasajero y vuelo
             Passenger passenger = Storage.getInstance().getPassenger(passengerId);
@@ -146,7 +138,7 @@ public class FlightControllers {
             }
 
             Flight flight = Storage.getInstance().getVuelo(flightId);
-            if (flight == null) {
+            if (flight== null) {
                 return new Response("Flight not found.", Status.NOT_FOUND);
             }
 
@@ -158,6 +150,7 @@ public class FlightControllers {
             return new Response("Passenger added successfully to the flight.", Status.OK);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }

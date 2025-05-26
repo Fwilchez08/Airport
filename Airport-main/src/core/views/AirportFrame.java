@@ -1075,7 +1075,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(Tablavuelo)
+                .addComponent(Tablavuelo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1706,9 +1706,8 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
             IDvuelo.setText("");
-            if(TipoVuelo.getItemCount()>0){
-                TipoVuelo.setSelectedIndex(0);
-            }
+            TipoVuelo.setSelectedIndex(0);
+
             
         }
     }//GEN-LAST:event_AñadirActionPerformed
@@ -1747,26 +1746,24 @@ public class AirportFrame extends javax.swing.JFrame {
     private void TablavueloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TablavueloActionPerformed
         // TODO add your handling code here:
         String passengerId = usuario.getItemAt(usuario.getSelectedIndex());
-        //Long passengerId = Long.parseLong(usuario.getItemAt(usuario.getSelectedIndex())); 
-        Passenger passenger = null;
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
-        }
-
-        
         Response response = PassengerController.mostrrarVuelos(passengerId);
-        if(response.getStatus()>=500){
-            JOptionPane.showMessageDialog(null, response.getMessage(),"Error "+ response.getStatus(), JOptionPane.ERROR_MESSAGE); 
-        }else if(response.getStatus()>=400){
-            JOptionPane.showMessageDialog(null, response.getMessage(),"Error "+ response.getStatus(), JOptionPane.ERROR_MESSAGE); 
-        }else{
-            ArrayList<Flight> flights = (ArrayList<Flight>) passenger.getFlights();
-            DefaultTableModel model = (DefaultTableModel) TablaVuelos.getModel();
+
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            ArrayList<Flight> flights = (ArrayList<Flight>) response.getObject();
+
+            DefaultTableModel model = (DefaultTableModel) TablaVuelo.getModel();
             model.setRowCount(0);
             for (Flight flight : flights) {
-                model.addRow(new Object[]{flight.getId(), flight.getDepartureDate(), flight.calculateArrivalDate()});
+                model.addRow(new Object[]{
+                    flight.getId(),
+                    flight.getDepartureDate(),
+                    flight.calculateArrivalDate()
+                });
             }
         }
         

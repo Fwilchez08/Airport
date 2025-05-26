@@ -263,10 +263,11 @@ public class PassengerController {
                 return new Response("Passenger id not exist.", Status.BAD_REQUEST);
             }
 
-            ArrayList<Flight> flights = Storage.getInstance().getPassengerFlights(Storage.getInstance().getPassenger(passengerId));
-            flights.sort(Comparator.comparing(Flight::getDepartureDate));
+            
 
             ArrayList<Flight> flightsCopy = new ArrayList<>();
+            ArrayList<Flight> flights = Storage.getInstance().getPassengerFlights(Storage.getInstance().getPassenger(passengerId));
+            flights.sort(Comparator.comparing(Flight::getDepartureDate));
             if (flights != null) {
                 for (Flight flight : flights) {
                     if (flight != null) {
@@ -277,7 +278,8 @@ public class PassengerController {
                 }
             }
 
-            return new Response("Flights loaded succesfully.", Status.OK);
+
+            return new Response("Flights loaded succesfully.", Status.OK, flightsCopy);
 
         } catch (Exception ex) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);

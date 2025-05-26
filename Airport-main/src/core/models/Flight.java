@@ -4,11 +4,6 @@
  */
 package core.models;
 
-/*import core.utils.Observer;
-import core.utils.Sujeto;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;*/
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

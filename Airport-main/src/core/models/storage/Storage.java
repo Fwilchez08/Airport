@@ -101,7 +101,7 @@ public class Storage {
     }
 
     public Flight getVuelo(String id) {
-        for (Flight flight : this.vuelo) {
+        for (Flight flight : vuelo) {
             if (flight.getId().equals(id)) {
                 return flight;
             }
@@ -110,7 +110,7 @@ public class Storage {
     }
 
     public Plane getAvion(String id) {
-        for (Plane plane : this.avion) {
+        for (Plane plane : avion) {
             if (plane.getId().equals(id)) {
                 return plane;
             }
@@ -119,7 +119,7 @@ public class Storage {
     }
 
     public boolean delPerson(String id) {
-        for (Passenger pass : this.pass) {
+        for (Passenger pass : pass) {
             if (Objects.equals(pass != null ? pass.getId() : null, id)) {
                 this.pass.remove(pass);
                 return true;

@@ -4,11 +4,6 @@
  */
 package core.models;
 
-/*import core.models.Flight;
-import core.utils.Sujeto;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;*/
 import core.utils.Sujeto;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,31 +54,6 @@ public class Passenger extends Sujeto {
             this.flights.add(flight != null ? flight.clonar() : null)
         );
     }
-    
-    
-   /* private void validateParameters(String id, String firstname, String lastname, 
-                                  LocalDate birthDate, int countryPhoneCode, 
-                                  long phone, String country) {
-        
-        if (firstname == null || firstname.trim().isEmpty()) {
-            throw new IllegalArgumentException("First name cannot be null or empty");
-        }
-        if (lastname == null || lastname.trim().isEmpty()) {
-            throw new IllegalArgumentException("Last name cannot be null or empty");
-        }
-        if (birthDate == null || birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Invalid birth date");
-        }
-        if (countryPhoneCode <= 0) {
-            throw new IllegalArgumentException("Country code must be positive");
-        }
-        if (phone <= 0) {
-            throw new IllegalArgumentException("Phone number must be positive");
-        }
-        if (country == null || country.trim().isEmpty()) {
-            throw new IllegalArgumentException("Country cannot be null or empty");
-        }
-    }*/
     
     public String getId() {
         return id;
