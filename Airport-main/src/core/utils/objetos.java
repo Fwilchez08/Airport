@@ -28,16 +28,6 @@ public class objetos {
         List<Passenger> passengers = new ArrayList<>();
         List<Location> locations = new ArrayList<>();
 
-        /*try (FileReader reader = new FileReader("src/flights.json")) {
-            var raw = (List<?>) Json.parse(reader);
-            for (Object obj : raw) {
-                if (obj instanceof Map) {
-                    flights.add(new Flight((Flight) (Map<String, Object>) obj));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
         try (FileReader reader = new FileReader("src/planes.json")) {
             var raw = (List<?>) Json.parse(reader);
